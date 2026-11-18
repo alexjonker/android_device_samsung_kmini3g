@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- keep whatever recovery the user has installed (e.g. TWRP) -->
+<resources>
+    <bool name="config_hideRecoveryUpdate">true</bool>
+</resources>
