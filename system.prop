@@ -118,3 +118,6 @@ ro.lineage.build.vendor_security_patch=2017-08-01
 # WiFi
 ro.disableWifiApFirmwareReload=true
 wifi.interface=wlan0
+
+# Low-RAM mode
+ro.config.low_ram=true
