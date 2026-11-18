@@ -151,7 +151,6 @@ vendor/lib/libssd.so|f7216c09cd17a94fb946179503cd286262be9de8
 lib/libdrmdecrypt.so:vendor/lib/libdrmdecrypt.so
 
 # FM Radio - From lineage-14.1-20180822-s3ve3g
-lib/libfmjni.so|5853a32bc9af140f469c2ce647c0db704b8e4482
 
 # IPC router security
 bin/irsc_util:vendor/bin/irsc_util
@@ -206,7 +205,6 @@ vendor/lib/libqmi_encdec.so
 vendor/lib/libqmiservices.so
 vendor/lib/libqmi_client_helper.so
 vendor/lib/libprotobuf-cpp-full.so:vendor/lib/libprotobuf-cpp-crap.so
-vendor/lib/libprotobuf-cpp-lite.so
 vendor/lib/libril-qcril-hook-oem.so
 
 # Sensors
@@ -224,4 +222,3 @@ lib/hw/sensors.msm8226.so:vendor/lib/hw/sensors.vendor.msm8226.so
 -app/TimeService/TimeService.apk
 bin/time_daemon:vendor/bin/time_daemon
 vendor/lib/libTimeService.so
--vendor/lib/libtime_genoff.so
