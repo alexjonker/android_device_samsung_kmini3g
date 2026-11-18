@@ -132,3 +132,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     vendor/samsung/s3ve3g-common/proprietary/vendor/lib/libdsi_netctrl.so:$(TARGET_COPY_OUT_VENDOR)/lib/libdsi_netctrl.so \
     vendor/samsung/s3ve3g-common/proprietary/vendor/lib/libqdi.so:$(TARGET_COPY_OUT_VENDOR)/lib/libqdi.so
+
+# Dexpreopt: fully AOT-compile apps at build time and on-device (slow CPU, JIT causes stutter)
+PRODUCT_DEX_PREOPT_DEFAULT_COMPILER_FILTER := speed
+PRODUCT_SYSTEM_PROPERTIES += \
+    pm.dexopt.install=speed \
+    pm.dexopt.bg-dexopt=speed
