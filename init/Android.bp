@@ -1,0 +1,20 @@
+//
+// Copyright (C) 2020 The LineageOS Project
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+cc_library_static {
+    name: "libinit_kmini3g",
+    recovery_available: true,
+    srcs: ["init_kmini3g.cpp"],
+    include_dirs: [
+        "device/samsung/msm8226-common/init",
+        "system/core/base/include",
+        "system/core/init",
+    ],
+    shared_libs: [
+        "libbase",
+    ],
+    whole_static_libs: ["libinit_helpers_sam8226"]
+}

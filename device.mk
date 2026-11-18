@@ -121,3 +121,6 @@ $(call inherit-product, device/samsung/msm8226-common/msm8226.mk)
 
 # Shipping API level (launched with Android 4.4)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_k.mk)
+
+# Soong namespaces
+PRODUCT_SOONG_NAMESPACES += device/samsung/kmini3g
