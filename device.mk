@@ -127,3 +127,8 @@ PRODUCT_SOONG_NAMESPACES += device/samsung/kmini3g
 # RIL shim
 PRODUCT_PACKAGES += \
     libshim_secril
+
+# GPS: data-service blobs from the S3 Neo
+PRODUCT_COPY_FILES += \
+    vendor/samsung/s3ve3g-common/proprietary/vendor/lib/libdsi_netctrl.so:$(TARGET_COPY_OUT_VENDOR)/lib/libdsi_netctrl.so \
+    vendor/samsung/s3ve3g-common/proprietary/vendor/lib/libqdi.so:$(TARGET_COPY_OUT_VENDOR)/lib/libqdi.so
