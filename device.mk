@@ -135,6 +135,6 @@ PRODUCT_COPY_FILES += \
 
 # Dexpreopt: fully AOT-compile apps at build time and on-device (slow CPU, JIT causes stutter)
 PRODUCT_DEX_PREOPT_DEFAULT_COMPILER_FILTER := speed
-PRODUCT_SYSTEM_PROPERTIES += \
+PRODUCT_PROPERTY_OVERRIDES += \
     pm.dexopt.install=speed \
     pm.dexopt.bg-dexopt=speed
