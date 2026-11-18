@@ -387,8 +387,11 @@ void send_remove_notice(void* device, int fid) {
     vcs_fingerprint_device_t* vdev = (vcs_fingerprint_device_t*)device;
 
     fingerprint_msg_t msg;
+    memset(&msg, 0, sizeof(msg));
     msg.type = FINGERPRINT_TEMPLATE_REMOVED;
+    msg.data.removed.finger.gid = vdev->active_gid;
     msg.data.removed.finger.fid = fid;
+    msg.data.removed.remaining_templates = vcs_get_enrolled_finger_num(); /* kmini3g: Android 8+ */
 
     pthread_mutex_lock(&vdev->lock);
     vdev->device.notify(&msg);
@@ -540,25 +543,48 @@ static int fingerprint_cancel(struct fingerprint_device *device) {
         }
     }
 
+    send_error_notice(vdev, FINGERPRINT_ERROR_CANCELED); /* kmini3g: Android 8+ cancel */
+
     return ret;
 }
 
 static int fingerprint_enumerate(struct fingerprint_device *device) {
+    /* kmini3g: Android 8+ enumerate: one TEMPLATE_ENUMERATING event per finger, the last one
+     * with remaining_templates = 0 (or a single empty event if nothing is enrolled). */
     ALOGV("----------------> %s ----------------->", __FUNCTION__);
     if (device == NULL) {
         ALOGE("Cannot enumerate saved fingerprints with uninitialized params");
         return -1;
     }
 
-    int num = 0;
-
     vcs_fingerprint_device_t* vdev = (vcs_fingerprint_device_t*)device;
+    fingerprint_msg_t msg;
+    int idx, remaining;
 
     pthread_mutex_lock(&vdev->lock);
-    num = vcs_get_enrolled_finger_num();
+    remaining = vcs_get_enrolled_finger_num();
+    if (remaining == 0) {
+        memset(&msg, 0, sizeof(msg));
+        msg.type = FINGERPRINT_TEMPLATE_ENUMERATING;
+        msg.data.enumerated.finger.gid = vdev->active_gid;
+        msg.data.enumerated.finger.fid = 0;
+        msg.data.enumerated.remaining_templates = 0;
+        if (vdev->device.notify) vdev->device.notify(&msg);
+    } else {
+        for (idx = 1; idx <= MAX_NUM_FINGERS; idx++) {
+            if (!tz.finger[idx].exist) continue;
+            remaining--;
+            memset(&msg, 0, sizeof(msg));
+            msg.type = FINGERPRINT_TEMPLATE_ENUMERATING;
+            msg.data.enumerated.finger.gid = vdev->active_gid;
+            msg.data.enumerated.finger.fid = idx;
+            msg.data.enumerated.remaining_templates = remaining;
+            if (vdev->device.notify) vdev->device.notify(&msg);
+        }
+    }
     pthread_mutex_unlock(&vdev->lock);
 
-    return num;
+    return 0;
 }
 
 static int fingerprint_remove(struct fingerprint_device *device,
@@ -576,6 +602,8 @@ static int fingerprint_remove(struct fingerprint_device *device,
 
     if (fid == 0) {
         // Delete all fingerprints
+        if (vcs_get_enrolled_finger_num() == 0)
+            send_remove_notice(vdev, 0); /* kmini3g: Android 8+ expects an event even when empty */
         int idx = 1;
         for (idx = 1; idx <= MAX_NUM_FINGERS; idx++)
             if (tz.finger[idx].exist) {

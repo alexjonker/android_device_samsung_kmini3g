@@ -17,7 +17,7 @@
  */
 
 #define LOG_TAG "Custom_QSEE"
-#define LOG_NDEBUG 0
+#define LOG_NDEBUG 1
 
 #include <cutils/log.h>
 

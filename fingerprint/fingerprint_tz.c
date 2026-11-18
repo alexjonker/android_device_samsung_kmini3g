@@ -328,7 +328,7 @@ void* vcs_enroll(void* vdev) {
     send_cmd->data[102400] = idx;
     ret = QSEECom_send_cmd(handle, send_cmd, QSEECOM_ALIGN(sizeof(*send_cmd)), resp, QSEECOM_ALIGN(sizeof(int)));
     if (ret || resp->result) {
-        ALOGE("send EnrollBegin error");
+        ALOGE("send EnrollBegin error (ret=%d result=%d)", ret, resp->result);
         set_tz_state(STATE_IDLE);
         send_error_notice(vdev, FINGERPRINT_ERROR_UNABLE_TO_PROCESS);
         return NULL;
@@ -354,7 +354,7 @@ void* vcs_enroll(void* vdev) {
         resp->data[0] = 0x8;
         ret = QSEECom_send_cmd(handle, send_cmd, QSEECOM_ALIGN(sizeof(int)), resp, QSEECOM_ALIGN(sizeof(*resp)));
         if (ret) {
-            ALOGE("%s:send vfmEnrollAddImage error", __FUNCTION__);
+            ALOGE("%s:send vfmEnrollAddImage error (ret=%d result=%d)", __FUNCTION__, ret, resp->result);
             set_tz_state(STATE_IDLE);
             send_error_notice(vdev, FINGERPRINT_ERROR_UNABLE_TO_PROCESS);
             return NULL;
@@ -380,7 +380,7 @@ void* vcs_enroll(void* vdev) {
     memcpy(&send_cmd->data, &tz.auth_session_token, AUTH_SESSION_TOKEN_LENGTH);
     ret = QSEECom_send_cmd(handle, send_cmd, QSEECOM_ALIGN(sizeof(*send_cmd)), resp, QSEECOM_ALIGN(sizeof(*resp)));
     if (ret || resp->result) {
-        ALOGE("Send vfmEnrollFinish error");
+        ALOGE("Send vfmEnrollFinish error (ret=%d result=%d)", ret, resp->result);
     }
     memcpy(&tz.finger[idx].data, &resp->data[2], FINGER_DATA_MAX_LENGTH);
     for (i = 0; i < 2; i++) {
@@ -395,7 +395,7 @@ void* vcs_enroll(void* vdev) {
         ret = QSEECom_send_cmd(handle, send_cmd, QSEECOM_ALIGN(sizeof(*send_cmd)), resp, QSEECOM_ALIGN(sizeof(*resp)));
     }
     if (ret || resp->result) {
-        ALOGE("Send vfmPayloadBind error");
+        ALOGE("Send vfmPayloadBind error (ret=%d result=%d)", ret, resp->result);
     }
     memcpy(&tz.finger[idx].payload, &resp->data[2], PAYLOAD_MAX_LENGTH);
     tz.finger[idx].exist = true;
@@ -418,7 +418,7 @@ void* vcs_enroll(void* vdev) {
         ret = QSEECom_send_cmd(handle, send_3x_cmd, QSEECOM_ALIGN(sizeof(*send_3x_cmd)), resp, QSEECOM_ALIGN(sizeof(*resp)));
     }
     if (ret || resp->result) {
-        ALOGE("Send vfmEnrollmentPasswordSet error");
+        ALOGE("Send vfmEnrollmentPasswordSet error (ret=%d result=%d)", ret, resp->result);
     }
 out:
     set_tz_state(STATE_IDLE);

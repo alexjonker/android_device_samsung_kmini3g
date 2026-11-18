@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- fingerprint sensor location: 0 = back, 1 = front (home button), 2 = left, 3 = right -->
+    <integer name="config_fingerprintSensorLocation">1</integer>
+</resources>
