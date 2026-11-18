@@ -123,3 +123,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_k.mk)
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += device/samsung/kmini3g
+
+# RIL shim
+PRODUCT_PACKAGES += \
+    libshim_secril

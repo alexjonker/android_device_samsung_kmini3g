@@ -125,3 +125,8 @@ endif
 
 # inherit from the proprietary version
 -include vendor/samsung/kmini3g/BoardConfigVendor.mk
+
+# RIL shim (strdup8to16)
+TARGET_LD_SHIM_LIBS += \
+    /system/vendor/lib/libsec-ril.so|libshim_secril.so \
+    /system/vendor/lib/libsec-ril-dsds.so|libshim_secril.so
